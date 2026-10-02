@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="404 — Page Not Found"
+  description="The page you're looking for doesn't exist on SHREWD."
+>
+  <Header />
+
+  <main id="main-content">
+    <div class="error-page">
+      <div class="container" style="text-align: center;">
+        <div class="error-terminal" role="img" aria-label="404 error in terminal style">
+          <div class="error-terminal-header">
+            <span class="terminal-dot red" aria-hidden="true"></span>
+            <span class="terminal-dot yellow" aria-hidden="true"></span>
+            <span class="terminal-dot green" aria-hidden="true"></span>
+          </div>
+          <div class="error-terminal-body">
+            <div style="color: var(--color-cyan); font-family: var(--font-mono);">
+              $ curl -I https://shrewd.pages.dev{Astro.url.pathname}
+            </div>
+            <div style="color: #64748b; font-family: var(--font-mono); margin-top: 0.5rem;">
+              HTTP/2 <span style="color: var(--color-red); font-weight: 700;">404</span>
+            </div>
+            <div style="color: #64748b; font-family: var(--font-mono);">
+              content-type: text/html
+            </div>
+            <div style="color: #64748b; font-family: var(--font-mono);">
+              x-page: not-found
+            </div>
+          </div>
+        </div>
+
+        <span class="error-code" aria-hidden="true">404</span>
+        <h1 class="error-title">Page Not Found</h1>
+        <p style="color: var(--color-text-muted); max-width: 420px; margin: var(--space-4) auto var(--space-8);">
+          This page doesn't exist or has been moved.
+          No lab evidence for it either.
+        </p>
+
+        <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+          <a href="/" class="btn btn--primary" id="error-home-btn">← Back to Home</a>
+          <a href="/blog" class="btn btn--outline" id="error-blog-btn">Browse Research</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .error-terminal {
+    background: var(--color-terminal-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    max-width: 480px;
+    margin: 0 auto var(--space-6);
+    text-align: left;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .error-terminal-header {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .error-terminal-body {
+    padding: var(--space-5);
+    font-size: 0.875rem;
+    line-height: 1.8;
+  }
+</style>

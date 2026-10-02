@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import HeroSection from '../components/HeroSection.astro';
+import MethodologyBar from '../components/MethodologyBar.astro';
+import FocusAreas from '../components/FocusAreas.astro';
+import LatestPosts from '../components/LatestPosts.astro';
+---
+
+<BaseLayout
+  title="SHREWD."
+  description="Practical cybersecurity lab experiments, Windows security hardening, vulnerability management, and evidence-driven research. Security, Tested."
+>
+  <Header />
+
+  <main id="main-content">
+    <!-- Hero -->
+    <HeroSection />
+
+    <!-- Methodology Strip -->
+    <MethodologyBar />
+
+    <!-- Focus Areas -->
+    <FocusAreas />
+
+    <!-- Divider -->
+    <div class="divider" style="margin: 0;"></div>
+
+    <!-- Latest Posts -->
+    <LatestPosts />
+
+    <!-- Bottom CTA -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <div class="container">
+        <h2 id="cta-heading">Have a research finding?<br />Write for <span class="text-cyan">SHREWD.</span></h2>
+        <p>
+          Share your lab experiments, vulnerability analyses, and security findings
+          with our community of practitioners.
+        </p>
+        <a href="/write-for-us" class="btn btn--primary btn--lg" id="cta-apply-btn">
+          Apply to Write →
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

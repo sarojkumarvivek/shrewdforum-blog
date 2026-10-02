@@ -1,0 +1,75 @@
+---
+const currentYear = new Date().getFullYear();
+
+const focusLinks = [
+  { href: '/blog?category=Windows+Security', label: 'Windows Security' },
+  { href: '/blog?category=Vulnerability+Management', label: 'Vulnerability Management' },
+  { href: '/blog?category=Windows+Server', label: 'Windows Server' },
+  { href: '/blog?category=Nessus+%26+Tenable', label: 'Nessus & Tenable' },
+  { href: '/blog?category=Hardening+%26+Compliance', label: 'Hardening & Compliance' },
+  { href: '/blog?category=Lab+Experiments', label: 'Lab Experiments' },
+];
+---
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Brand Column -->
+      <div class="footer-brand">
+        <a href="/" class="site-logo" aria-label="SHREWD. — Home" style="font-size: 1.375rem;">
+          <span class="logo-text">shrewd</span><span class="logo-dot">.</span>
+        </a>
+        <p>Practical cybersecurity lab experiments, Windows security hardening, and evidence-driven vulnerability research.</p>
+        <p class="footer-tagline">Security, Tested.</p>
+      </div>
+
+      <!-- Research Column -->
+      <div class="footer-col">
+        <h4>Research</h4>
+        <ul class="footer-links">
+          {focusLinks.map(link => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Site Column -->
+      <div class="footer-col">
+        <h4>Site</h4>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/blog">All Research</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/write-for-us">Write For Us</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Methodology Column -->
+      <div class="footer-col">
+        <h4>Methodology</h4>
+        <ul class="footer-links" style="gap: 0.5rem;">
+          <li style="color: var(--color-text-subtle); font-size: 0.875rem;">Question</li>
+          <li style="color: var(--color-cyan); font-size: 0.75rem; font-weight: 700;">↓</li>
+          <li style="color: var(--color-text-subtle); font-size: 0.875rem;">Research</li>
+          <li style="color: var(--color-cyan); font-size: 0.75rem; font-weight: 700;">↓</li>
+          <li style="color: var(--color-text-subtle); font-size: 0.875rem;">Lab</li>
+          <li style="color: var(--color-cyan); font-size: 0.75rem; font-weight: 700;">↓</li>
+          <li style="color: var(--color-text-subtle); font-size: 0.875rem;">Evidence</li>
+          <li style="color: var(--color-cyan); font-size: 0.75rem; font-weight: 700;">↓</li>
+          <li style="color: var(--color-text-subtle); font-size: 0.875rem;">Fix → Retest → Result</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <span>© {currentYear} SHREWD. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/admin" target="_blank" rel="noopener">CMS</a>
+      </div>
+    </div>
+  </div>
+</footer>

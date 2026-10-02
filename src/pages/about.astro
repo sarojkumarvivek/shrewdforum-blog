@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="About SHREWD."
+  description="SHREWD. is a cybersecurity research blog focused on practical lab experiments, Windows security hardening, vulnerability management, and evidence-driven findings."
+>
+  <Header />
+
+  <main id="main-content">
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="badge badge--cyan" style="margin-bottom: var(--space-4);">About</div>
+        <h1 class="page-title">
+          Security Research<br />
+          <span style="color: var(--color-cyan);">With Evidence.</span>
+        </h1>
+        <p class="page-subtitle">
+          SHREWD. exists because too much cybersecurity content is theoretical.
+          We test everything in the lab before publishing.
+        </p>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="content-section">
+      <div class="container">
+        <div class="content-block">
+          <!-- Left: Mission -->
+          <div>
+            <h2 style="margin-bottom: var(--space-6);">Our Mission</h2>
+            <p style="margin-bottom: var(--space-4);">
+              The cybersecurity space is full of blog posts that tell you <em>what</em>
+              vulnerabilities are without showing you what actually happens when you exploit them,
+              patch them, or try to detect them.
+            </p>
+            <p style="margin-bottom: var(--space-4);">
+              SHREWD. is different. Every post on this site follows a strict methodology:
+              we start with a question, run a controlled lab experiment, document the evidence,
+              implement a fix, retest it, and report the result.
+            </p>
+            <p>
+              If we can't test it, we don't publish it.
+            </p>
+          </div>
+
+          <!-- Right: Stats -->
+          <div>
+            <div class="stat-grid">
+              <div class="stat-card">
+                <span class="stat-number">100%</span>
+                <div class="stat-label">Lab-tested content</div>
+              </div>
+              <div class="stat-card">
+                <span class="stat-number">0</span>
+                <div class="stat-label">Theory-only posts</div>
+              </div>
+              <div class="stat-card">
+                <span class="stat-number">7</span>
+                <div class="stat-label">Research steps every time</div>
+              </div>
+              <div class="stat-card">
+                <span class="stat-number">∞</span>
+                <div class="stat-label">Curiousity</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Methodology Deep Dive -->
+        <div style="margin: var(--space-16) 0;">
+          <h2 style="margin-bottom: var(--space-8);">The Methodology</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-4);">
+            {[
+              { num: '01', label: 'Question', desc: 'Every post starts with a specific, testable question.' },
+              { num: '02', label: 'Research', desc: 'Background research on the topic before touching any tooling.' },
+              { num: '03', label: 'Lab', desc: 'Isolated VM or physical lab environment. Real tools, real targets.' },
+              { num: '04', label: 'Evidence', desc: 'Screenshots, terminal logs, event viewer exports. Everything documented.' },
+              { num: '05', label: 'Fix', desc: 'If we found a problem, we implement and document the remediation.' },
+              { num: '06', label: 'Retest', desc: 'We rerun the test after fixing to confirm the remediation worked.' },
+              { num: '07', label: 'Result', desc: 'A clear, evidence-backed conclusion with a specific recommendation.' },
+            ].map(step => (
+              <div class="info-card">
+                <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-cyan); font-weight: 700; margin-bottom: var(--space-2);">{step.num}</div>
+                <div style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);">{step.label}</div>
+                <div style="font-size: 0.875rem; color: var(--color-text-muted);">{step.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Focus Areas -->
+        <div>
+          <h2 style="margin-bottom: var(--space-6);">What We Cover</h2>
+          <div class="grid-2" style="gap: var(--space-4);">
+            {[
+              { icon: '🪟', title: 'Windows Security', desc: 'Hardening Windows 10/11 and Server against real-world attack techniques.' },
+              { icon: '📊', title: 'Nessus & Tenable', desc: 'Real scan outputs, plugin analysis, and CVSS scoring breakdowns.' },
+              { icon: '🔍', title: 'Vulnerability Management', desc: 'Full lifecycle: scan → prioritize → patch → verify.' },
+              { icon: '🖥️', title: 'Windows Server', desc: 'Active Directory, GPO, RDP hardening, and server security baselines.' },
+              { icon: '🛡️', title: 'Hardening & Compliance', desc: 'CIS Benchmarks, DISA STIGs, and NIST framework implementation.' },
+              { icon: '🔬', title: 'Lab Experiments', desc: 'Controlled attack and defense tests with documented evidence.' },
+            ].map(area => (
+              <div class="info-card" style="display: flex; gap: var(--space-4); align-items: flex-start;">
+                <span style="font-size: 1.5rem; flex-shrink: 0;">{area.icon}</span>
+                <div>
+                  <div style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-1);">{area.title}</div>
+                  <div style="font-size: 0.875rem; color: var(--color-text-muted);">{area.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" aria-labelledby="about-cta-heading">
+      <div class="container">
+        <h2 id="about-cta-heading">
+          Want to contribute?<br />
+          <span style="color: var(--color-cyan);">We review every submission.</span>
+        </h2>
+        <p>All contributors must follow the SHREWD. methodology. No exceptions.</p>
+        <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+          <a href="/write-for-us" class="btn btn--primary btn--lg">Apply to Write →</a>
+          <a href="/blog" class="btn btn--outline btn--lg">Read the Research</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

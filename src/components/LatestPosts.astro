@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import BlogCard from './BlogCard.astro';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+// Sort by date, newest first
+const sortedPosts = posts.sort((a, b) =>
+  b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+const latestPosts = sortedPosts.slice(0, 3);
+
+function getReadTime(body?: string): number {
+  return Math.max(1, Math.ceil((body || '').split(/\s+/).length / 238));
+}
+---
+
+<section class="latest-posts" aria-labelledby="latest-posts-heading">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" id="latest-posts-heading">Latest Research</h2>
+        <p class="section-subtitle">Fresh from the lab. Evidence-backed findings.</p>
+      </div>
+      <a href="/blog" class="view-all-link">
+        View all research →
+      </a>
+    </div>
+
+    {latestPosts.length > 0 ? (
+      <div class="grid-3">
+        {latestPosts.map(post => (
+          <BlogCard
+            title={post.data.title}
+            slug={post.id.replace(/\.md$/, '')}
+            excerpt={post.data.description}
+            date={post.data.pubDate}
+            author={post.data.author}
+            category={post.data.category}
+            readTime={getReadTime(post.body)}
+            image={post.data.image}
+            difficulty={post.data.difficulty}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <p>No posts published yet. Check back soon.</p>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .empty-state {
+    text-align: center;
+    padding: var(--space-16) 0;
+    color: var(--color-text-muted);
+  }
+</style>

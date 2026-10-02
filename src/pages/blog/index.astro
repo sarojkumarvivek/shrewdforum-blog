@@ -1,0 +1,135 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+const sortedPosts = allPosts.sort((a, b) =>
+  b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+const POSTS_PER_PAGE = 10;
+
+const categories = [
+  'All',
+  'Windows Security',
+  'Vulnerability Management',
+  'Windows Server',
+  'Nessus & Tenable',
+  'Hardening & Compliance',
+  'Lab Experiments',
+];
+
+function getReadTime(body?: string): number {
+  return Math.max(1, Math.ceil((body || '').split(/\s+/).length / 238));
+}
+---
+
+<BaseLayout
+  title="All Research"
+  description="Browse all SHREWD. cybersecurity research posts. Lab experiments, vulnerability management, Windows security hardening, and evidence-driven findings."
+>
+  <Header />
+
+  <main id="main-content">
+    <section class="blog-listing">
+      <div class="container">
+        <!-- Header -->
+        <div class="blog-listing-header">
+          <h1 class="blog-listing-title">All Research</h1>
+          <p class="blog-listing-count">{sortedPosts.length} {sortedPosts.length === 1 ? 'post' : 'posts'} published</p>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="category-filters" role="group" aria-label="Filter by category">
+          {categories.map(cat => (
+            <button
+              class={`category-filter-btn ${cat === 'All' ? 'active' : ''}`}
+              data-category={cat}
+              type="button"
+              aria-pressed={cat === 'All' ? 'true' : 'false'}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <!-- Posts Grid -->
+        <div class="blog-grid" id="posts-grid" aria-live="polite">
+          {sortedPosts.map(post => (
+            <div class="blog-grid-item" data-category={post.data.category}>
+              <BlogCard
+                title={post.data.title}
+                slug={post.id.replace(/\.md$/, '')}
+                excerpt={post.data.description}
+                date={post.data.pubDate}
+                author={post.data.author}
+                category={post.data.category}
+                readTime={getReadTime(post.body)}
+                image={post.data.image}
+                difficulty={post.data.difficulty}
+              />
+            </div>
+          ))}
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;" aria-live="polite">
+          <p style="color: var(--color-text-muted); text-align: center; padding: var(--space-16) 0;">
+            No posts in this category yet.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .blog-grid-item {
+    display: flex;
+  }
+
+  .blog-grid-item .blog-card {
+    width: 100%;
+  }
+</style>
+
+<script>
+  const filterBtns = document.querySelectorAll('.category-filter-btn');
+  const gridItems = document.querySelectorAll('.blog-grid-item');
+  const emptyState = document.getElementById('empty-state');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = (btn as HTMLButtonElement).dataset.category;
+
+      // Update active state
+      filterBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+
+      // Filter items
+      let visibleCount = 0;
+      gridItems.forEach(item => {
+        const el = item as HTMLElement;
+        const itemCategory = el.dataset.category;
+        const show = category === 'All' || itemCategory === category;
+        el.style.display = show ? 'flex' : 'none';
+        if (show) visibleCount++;
+      });
+
+      // Show empty state if no results
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    });
+  });
+</script>

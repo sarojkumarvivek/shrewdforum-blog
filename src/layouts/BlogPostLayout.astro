@@ -1,0 +1,221 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, author, pubDate, updatedDate, category, tags, image, difficulty, authorBio, authorGitHub } = post.data;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const updatedFormatted = updatedDate?.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+// Category badge class mapping
+const categoryBadgeMap: Record<string, string> = {
+  'Windows Security': 'badge--windows',
+  'Vulnerability Management': 'badge--vuln',
+  'Windows Server': 'badge--server',
+  'Nessus & Tenable': 'badge--nessus',
+  'Hardening & Compliance': 'badge--hardening',
+  'Lab Experiments': 'badge--lab',
+};
+
+const categoryBadge = categoryBadgeMap[category] || 'badge--cyan';
+const authorInitial = author.charAt(0).toUpperCase();
+const readTimeMin = Math.ceil((post.body?.length || 0) / 5 / 238);
+---
+
+<BaseLayout title={title} description={description} image={image}>
+  <!-- Reading Progress Bar -->
+  <div id="reading-progress" role="progressbar" aria-label="Reading progress"></div>
+
+  <Header />
+
+  <main id="main-content">
+    <article>
+      <!-- Post Hero -->
+      <header class="post-hero">
+        <div class="container container--narrow">
+          <!-- Meta -->
+          <div class="post-meta">
+            <span class={`badge ${categoryBadge}`}>{category}</span>
+            {difficulty && (
+              <span class={`difficulty-badge difficulty--${difficulty.toLowerCase()}`}>
+                {difficulty}
+              </span>
+            )}
+            <span class="post-meta-separator">·</span>
+            <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+            {updatedDate && (
+              <>
+                <span class="post-meta-separator">·</span>
+                <span>Updated {updatedFormatted}</span>
+              </>
+            )}
+            <span class="post-meta-separator">·</span>
+            <span>{readTimeMin} min read</span>
+          </div>
+
+          <h1 class="post-title">{title}</h1>
+          <p class="post-description">{description}</p>
+
+          <!-- Author row -->
+          <div class="post-author-row">
+            <div class="author-avatar" aria-hidden="true">{authorInitial}</div>
+            <div>
+              <div class="author-name-lg">{author}</div>
+              {tags && tags.length > 0 && (
+                <div class="post-tags">
+                  {tags.map(tag => (
+                    <span class="post-tag">#{tag}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Cover Image -->
+      {image && (
+        <div class="container container--narrow">
+          <img
+            src={image}
+            alt={`Cover image for ${title}`}
+            class="post-cover"
+            loading="eager"
+          />
+        </div>
+      )}
+
+      <!-- Post Body -->
+      <div class="container container--narrow">
+        <div class="prose post-body">
+          <slot />
+        </div>
+
+        <!-- Share Section -->
+        <div class="share-section">
+          <span class="share-label">Share this research</span>
+          <button id="copy-url-btn" class="share-copy-btn" type="button" aria-label="Copy article URL">
+            🔗 Copy Link
+          </button>
+          <a
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(Astro.url.href)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn--ghost btn--sm"
+          >
+            𝕏 Share
+          </a>
+        </div>
+
+        <!-- Author Bio -->
+        {authorBio && (
+          <div class="author-bio-card">
+            <div class="author-bio-avatar" aria-hidden="true">{authorInitial}</div>
+            <div class="author-bio-content">
+              <h4>{author}</h4>
+              <p>{authorBio}</p>
+              {authorGitHub && (
+                <a
+                  href={`https://github.com/${authorGitHub}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn--ghost btn--sm"
+                  style="margin-top: 0.75rem; display: inline-flex;"
+                >
+                  GitHub →
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+
+  <script>
+    // Reading Progress Bar
+    const progressBar = document.getElementById('reading-progress');
+    const article = document.querySelector('article');
+
+    if (progressBar && article) {
+      window.addEventListener('scroll', () => {
+        const articleTop = article.offsetTop;
+        const articleHeight = article.offsetHeight;
+        const windowHeight = window.innerHeight;
+        const scrollY = window.scrollY;
+
+        const progress = Math.min(
+          Math.max((scrollY - articleTop + windowHeight * 0.1) / (articleHeight - windowHeight * 0.9), 0),
+          1
+        );
+        progressBar.style.width = `${progress * 100}%`;
+      }, { passive: true });
+    }
+
+    // Copy URL
+    const copyBtn = document.getElementById('copy-url-btn');
+    copyBtn?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        copyBtn.textContent = '✅ Copied!';
+        setTimeout(() => {
+          copyBtn.textContent = '🔗 Copy Link';
+        }, 2000);
+      } catch {
+        copyBtn.textContent = '❌ Failed';
+      }
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  .post-author-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .author-name-lg {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .post-tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-top: var(--space-2);
+  }
+
+  .post-tag {
+    font-size: 0.75rem;
+    color: var(--color-text-subtle);
+    font-family: var(--font-mono);
+  }
+
+  .post-body {
+    padding: var(--space-10) 0;
+  }
+</style>

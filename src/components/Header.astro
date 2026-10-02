@@ -1,0 +1,65 @@
+---
+const pathname = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/blog', label: 'Research' },
+  { href: '/about', label: 'About' },
+  { href: '/write-for-us', label: 'Write' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <div class="header-inner">
+      <!-- Logo -->
+      <a href="/" class="site-logo" aria-label="SHREWD. — Home">
+        <span class="logo-text">shrewd</span><span class="logo-dot">.</span>
+      </a>
+
+      <!-- Navigation -->
+      <nav id="site-nav" class="site-nav" role="navigation" aria-label="Main navigation">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            aria-current={pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href)) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          type="button"
+          aria-label="Toggle theme"
+          title="Toggle dark/light mode"
+        >
+          ☀️
+        </button>
+
+        <a href="/write-for-us" class="btn btn--primary btn--sm header-write-btn">
+          Write for Us
+        </a>
+
+        <!-- Mobile menu toggle -->
+        <button
+          id="mobile-menu-btn"
+          class="mobile-menu-btn"
+          type="button"
+          aria-label="Toggle mobile menu"
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

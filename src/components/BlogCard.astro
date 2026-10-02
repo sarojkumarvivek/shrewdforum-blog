@@ -1,0 +1,80 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: Date;
+  author: string;
+  category: string;
+  readTime: number;
+  image?: string;
+  difficulty?: string;
+}
+
+const { title, slug, excerpt, date, author, category, readTime, image, difficulty } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+
+const authorInitial = author.charAt(0).toUpperCase();
+
+// Category badge class and emoji
+const categoryConfig: Record<string, { badge: string; emoji: string }> = {
+  'Windows Security': { badge: 'badge--windows', emoji: '🪟' },
+  'Vulnerability Management': { badge: 'badge--vuln', emoji: '🔍' },
+  'Windows Server': { badge: 'badge--server', emoji: '🖥️' },
+  'Nessus & Tenable': { badge: 'badge--nessus', emoji: '📊' },
+  'Hardening & Compliance': { badge: 'badge--hardening', emoji: '🛡️' },
+  'Lab Experiments': { badge: 'badge--lab', emoji: '🔬' },
+};
+
+const catConfig = categoryConfig[category] || { badge: 'badge--cyan', emoji: '📝' };
+---
+
+<a href={`/blog/${slug}`} class="blog-card" aria-label={`Read: ${title}`}>
+  <!-- Image or Placeholder -->
+  {image ? (
+    <img
+      src={image}
+      alt={`Cover image for ${title}`}
+      class="blog-card-image"
+      loading="lazy"
+    />
+  ) : (
+    <div class="blog-card-image-placeholder" aria-hidden="true">
+      {catConfig.emoji}
+    </div>
+  )}
+
+  <!-- Card Body -->
+  <div class="blog-card-body">
+    <!-- Meta Row -->
+    <div class="blog-card-meta">
+      <span class={`badge ${catConfig.badge}`}>{category}</span>
+      {difficulty && (
+        <span class={`difficulty-badge difficulty--${difficulty.toLowerCase()}`}>
+          {difficulty}
+        </span>
+      )}
+      <span class="blog-card-read-time">{readTime} min read</span>
+    </div>
+
+    <!-- Title -->
+    <h3 class="blog-card-title">{title}</h3>
+
+    <!-- Excerpt -->
+    <p class="blog-card-excerpt">{excerpt}</p>
+
+    <!-- Footer -->
+    <div class="blog-card-footer">
+      <div class="author-info">
+        <div class="author-avatar" aria-hidden="true">{authorInitial}</div>
+        <span class="author-name">{author}</span>
+      </div>
+      <time class="blog-card-date" datetime={date.toISOString()}>{formattedDate}</time>
+    </div>
+  </div>
+</a>

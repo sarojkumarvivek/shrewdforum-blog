@@ -1,0 +1,103 @@
+---
+const areas = [
+  {
+    icon: '🪟',
+    title: 'Windows Security',
+    description: 'Hardening, misconfigs, and security baselines tested live in isolated lab environments.',
+    href: '/blog?category=Windows+Security',
+    color: 'rgba(0, 120, 215, 0.15)',
+    borderColor: 'rgba(59, 158, 222, 0.3)',
+  },
+  {
+    icon: '🔍',
+    title: 'Vulnerability Management',
+    description: 'Scan, prioritize, patch, and verify. The full vulnerability lifecycle with evidence.',
+    href: '/blog?category=Vulnerability+Management',
+    color: 'rgba(239, 68, 68, 0.1)',
+    borderColor: 'rgba(239, 68, 68, 0.25)',
+  },
+  {
+    icon: '🖥️',
+    title: 'Windows Server',
+    description: 'AD, GPO, RDP, and server hardening — from the lab bench to production guidance.',
+    href: '/blog?category=Windows+Server',
+    color: 'rgba(20, 184, 166, 0.1)',
+    borderColor: 'rgba(20, 184, 166, 0.25)',
+  },
+  {
+    icon: '📊',
+    title: 'Nessus & Tenable',
+    description: 'Real scan outputs, false positive analysis, plugin breakdowns, and verified fixes.',
+    href: '/blog?category=Nessus+%26+Tenable',
+    color: 'rgba(34, 197, 94, 0.1)',
+    borderColor: 'rgba(34, 197, 94, 0.25)',
+  },
+  {
+    icon: '🛡️',
+    title: 'Hardening & Compliance',
+    description: 'CIS Benchmarks and DISA STIGs applied, tested, and verified in real lab environments.',
+    href: '/blog?category=Hardening+%26+Compliance',
+    color: 'rgba(168, 85, 247, 0.1)',
+    borderColor: 'rgba(168, 85, 247, 0.25)',
+  },
+  {
+    icon: '🔬',
+    title: 'Lab Experiments',
+    description: 'Controlled tests with documented methodology, evidence logs, and reproducible results.',
+    href: '/blog?category=Lab+Experiments',
+    color: 'rgba(251, 146, 60, 0.1)',
+    borderColor: 'rgba(251, 146, 60, 0.25)',
+  },
+];
+---
+
+<section class="section" aria-labelledby="focus-areas-heading">
+  <div class="container">
+    <div class="text-center" style="margin-bottom: var(--space-12);">
+      <h2 class="section-title" id="focus-areas-heading">Focus Areas</h2>
+      <p class="section-subtitle" style="margin: 0 auto;">
+        Six domains. All lab-tested. No theory without evidence.
+      </p>
+    </div>
+
+    <div class="grid-3" role="list" aria-label="Research focus areas">
+      {areas.map(area => (
+        <a
+          href={area.href}
+          class="focus-card"
+          role="listitem"
+          aria-label={`${area.title}: ${area.description}`}
+          style={`--card-accent: ${area.color}; --card-border: ${area.borderColor};`}
+        >
+          <span class="focus-icon" aria-hidden="true">{area.icon}</span>
+          <h3>{area.title}</h3>
+          <p>{area.description}</p>
+          <span class="focus-card-link">View research →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .focus-card {
+    text-decoration: none;
+    display: block;
+  }
+
+  .focus-card-link {
+    display: inline-block;
+    margin-top: var(--space-4);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-cyan);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all var(--transition-base);
+  }
+
+  .focus-card:hover .focus-card-link {
+    opacity: 1;
+    transform: translateX(0);
+  }
+</style>

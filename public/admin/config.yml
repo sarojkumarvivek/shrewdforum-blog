@@ -1,0 +1,46 @@
+backend:
+  name: github
+  repo: sarojkumarvivek/shrewdforum-blog
+  branch: main
+  base_url: https://sveltia-cms-auth.pages.dev
+
+publish_mode: editorial_workflow
+media_folder: public/images/blog
+public_folder: /images/blog
+locale: en
+
+collections:
+  - name: blog
+    label: "Blog Posts"
+    label_singular: "Blog Post"
+    folder: src/content/blog
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "blog/{{slug}}"
+    fields:
+      - { label: "Title", name: title, widget: string }
+      - { label: "Description", name: description, widget: text }
+      - { label: "Publish Date", name: pubDate, widget: datetime }
+      - { label: "Author", name: author, widget: string }
+      - { label: "Author Bio", name: authorBio, widget: text, required: false }
+      - { label: "Author GitHub", name: authorGitHub, widget: string, required: false }
+      - label: "Category"
+        name: category
+        widget: select
+        options:
+          - Windows Security
+          - Vulnerability Management
+          - Windows Server
+          - Nessus & Tenable
+          - Hardening & Compliance
+          - Lab Experiments
+      - { label: "Tags", name: tags, widget: list, required: false }
+      - { label: "Cover Image", name: image, widget: image, required: false }
+      - label: "Difficulty"
+        name: difficulty
+        widget: select
+        options: [Beginner, Intermediate, Advanced]
+        required: false
+      - { label: "Featured", name: featured, widget: boolean, default: false }
+      - { label: "Draft", name: draft, widget: boolean, default: false }
+      - { label: "Body", name: body, widget: markdown }

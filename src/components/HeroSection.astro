@@ -1,0 +1,87 @@
+---
+---
+
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="container">
+    <div class="hero-inner">
+      <!-- Left: Content -->
+      <div class="hero-content">
+        <div class="hero-badge" role="note">
+          <span>⚡</span>
+          CYBERSECURITY RESEARCH
+        </div>
+
+        <h1 class="hero-title" id="hero-heading">
+          Don't Just Explain Cybersecurity.
+          <span class="line-cyan">Test It.</span>
+        </h1>
+
+        <p class="hero-desc">
+          Practical lab experiments, Windows security hardening, vulnerability management,
+          and evidence-driven research. Every finding backed by lab logs and verified fixes.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="/blog" class="btn btn--primary btn--lg" id="hero-explore-btn">
+            Explore Labs →
+          </a>
+          <a href="/write-for-us" class="btn btn--outline btn--lg" id="hero-write-btn">
+            Write For Us
+          </a>
+        </div>
+
+        <div class="hero-trust" role="list" aria-label="Trust indicators">
+          <span role="listitem">Evidence-driven</span>
+          <span role="listitem">Lab-tested</span>
+          <span role="listitem">Practitioner-written</span>
+        </div>
+      </div>
+
+      <!-- Right: Terminal Mockup -->
+      <div class="terminal" role="img" aria-label="Terminal showing Nmap vulnerability scan output">
+        <div class="terminal-header">
+          <span class="terminal-dot red" aria-hidden="true"></span>
+          <span class="terminal-dot yellow" aria-hidden="true"></span>
+          <span class="terminal-dot green" aria-hidden="true"></span>
+          <span class="terminal-title">shrewd@lab: ~ bash</span>
+        </div>
+        <div class="terminal-body">
+          <div>
+            <span class="terminal-prompt">$</span>
+            <span class="terminal-cmd"> nmap -sV --script vuln 192.168.1.1</span>
+          </div>
+          <div class="terminal-output">Starting Nmap 7.94 ( https://nmap.org )</div>
+          <div class="terminal-output">Scan report for 192.168.1.1</div>
+          <br />
+          <div class="terminal-output">PORT&nbsp;&nbsp;&nbsp;&nbsp; STATE SERVICE&nbsp; VERSION</div>
+          <div>
+            <span class="terminal-cve">445/tcp</span>
+            <span class="terminal-output"> open  msrpc&nbsp;&nbsp;&nbsp; Microsoft Windows RPC</span>
+          </div>
+          <div class="terminal-output">| smb-vuln-ms17-010:</div>
+          <div>
+            <span class="terminal-output">|&nbsp;&nbsp; </span>
+            <span class="terminal-vulnerable">VULNERABLE</span>
+          </div>
+          <div class="terminal-output">|&nbsp;&nbsp; Risk factor: <span class="terminal-high">HIGH</span></div>
+          <div class="terminal-output">|&nbsp;&nbsp; CVE: <span class="terminal-cve">CVE-2017-0144</span></div>
+          <div class="terminal-output">|&nbsp;&nbsp; CVSS: <span class="terminal-high">9.3</span></div>
+          <div class="terminal-output">|_ EternalBlue SMB Remote Code Execution</div>
+          <br />
+          <div class="terminal-output">3389/tcp open  ms-wbt-server</div>
+          <div class="terminal-output">| rdp-vuln-ms12-020:</div>
+          <div>
+            <span class="terminal-output">|&nbsp;&nbsp; </span>
+            <span class="terminal-vulnerable">VULNERABLE (DoS)</span>
+          </div>
+          <br />
+          <div>
+            <span class="terminal-prompt">$</span>
+            <span class="terminal-cmd"> </span>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

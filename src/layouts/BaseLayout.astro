@@ -1,0 +1,110 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string;
+}
+
+const {
+  title,
+  description = 'Practical cybersecurity lab experiments, Windows security hardening, vulnerability management, and evidence-driven research. Every finding backed by lab logs and verified fixes.',
+  image = '/og-default.png',
+  canonicalURL = Astro.url.href,
+} = Astro.props;
+
+const siteTitle = title === 'SHREWD.' ? 'SHREWD. — Security, Tested.' : `${title} | SHREWD.`;
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{siteTitle}</title>
+    <meta name="title" content={siteTitle} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:site_name" content="SHREWD." />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={siteTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Theme initialization — must run before render to avoid flash -->
+    <script is:inline>
+      (function () {
+        try {
+          const saved = localStorage.getItem('shrewd-theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = saved || (prefersDark ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+
+    <!-- Theme toggle & mobile menu script -->
+    <script>
+      // Theme toggle
+      const themeToggle = document.getElementById('theme-toggle');
+      const html = document.documentElement;
+
+      function updateToggleIcon() {
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        if (themeToggle) {
+          themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+          themeToggle.textContent = isDark ? '☀️' : '🌙';
+        }
+      }
+
+      updateToggleIcon();
+
+      themeToggle?.addEventListener('click', () => {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('shrewd-theme', next);
+        updateToggleIcon();
+      });
+
+      // Mobile menu
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const siteNav = document.getElementById('site-nav');
+
+      mobileMenuBtn?.addEventListener('click', () => {
+        const isOpen = siteNav?.classList.toggle('open');
+        mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      // Close mobile menu on navigation
+      document.querySelectorAll('.site-nav a').forEach(link => {
+        link.addEventListener('click', () => {
+          siteNav?.classList.remove('open');
+        });
+      });
+    </script>
+  </body>
+</html>

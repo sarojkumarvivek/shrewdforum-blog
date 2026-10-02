@@ -1,0 +1,26 @@
+---
+const steps = [
+  'Question',
+  'Research',
+  'Lab',
+  'Evidence',
+  'Fix',
+  'Retest',
+  'Result',
+];
+---
+
+<section class="methodology" aria-label="Research methodology">
+  <div class="container">
+    <div class="methodology-inner" role="list" aria-label="Methodology steps">
+      {steps.map((step, i) => (
+        <div class="methodology-step" role="listitem">
+          <span class="methodology-step-label">{step}</span>
+          {i < steps.length - 1 && (
+            <span class="methodology-arrow" aria-hidden="true">→</span>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
