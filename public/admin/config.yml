@@ -2,7 +2,6 @@ backend:
   name: github
   repo: sarojkumarvivek/shrewdforum-blog
   branch: main
-  base_url: https://sveltia-cms-auth.pages.dev
 site_url: https://forum.shr3wd.workers.dev
 
 publish_mode: editorial_workflow
