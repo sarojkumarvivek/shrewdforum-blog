@@ -2,7 +2,8 @@ backend:
   name: github
   repo: sarojkumarvivek/shrewdforum-blog
   branch: main
-  auth_type: implicit
+  base_url: https://shrewd-auth.shr3wd.workers.dev
+  auth_endpoint: /auth
 site_url: https://forum.shr3wd.workers.dev
 
 publish_mode: editorial_workflow
