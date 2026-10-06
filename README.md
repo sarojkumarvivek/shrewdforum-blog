@@ -1,4 +1,4 @@
-<![CDATA[# SHREWD. — Cybersecurity Research Blog
+# SHREWD. — Cybersecurity Research Blog
 
 > **Security, Tested.**
 
@@ -404,4 +404,3 @@ Code structure is MIT licensed.
 ---
 
 **SHREWD. — Security, Tested.**
-]]>
