@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://shrewdforum-blog.pages.dev',
+  site: 'https://forum.shr3wd.workers.dev',
   output: 'static',
   build: {
     assets: '_assets',

@@ -7,6 +7,7 @@ const areas = [
     href: '/blog?category=Windows+Security',
     color: 'rgba(0, 120, 215, 0.15)',
     borderColor: 'rgba(59, 158, 222, 0.3)',
+    glowColor: '0, 120, 215',
   },
   {
     icon: '🔍',
@@ -15,6 +16,7 @@ const areas = [
     href: '/blog?category=Vulnerability+Management',
     color: 'rgba(239, 68, 68, 0.1)',
     borderColor: 'rgba(239, 68, 68, 0.25)',
+    glowColor: '239, 68, 68',
   },
   {
     icon: '🖥️',
@@ -23,6 +25,7 @@ const areas = [
     href: '/blog?category=Windows+Server',
     color: 'rgba(20, 184, 166, 0.1)',
     borderColor: 'rgba(20, 184, 166, 0.25)',
+    glowColor: '20, 184, 166',
   },
   {
     icon: '📊',
@@ -31,6 +34,7 @@ const areas = [
     href: '/blog?category=Nessus+%26+Tenable',
     color: 'rgba(34, 197, 94, 0.1)',
     borderColor: 'rgba(34, 197, 94, 0.25)',
+    glowColor: '34, 197, 94',
   },
   {
     icon: '🛡️',
@@ -39,6 +43,7 @@ const areas = [
     href: '/blog?category=Hardening+%26+Compliance',
     color: 'rgba(168, 85, 247, 0.1)',
     borderColor: 'rgba(168, 85, 247, 0.25)',
+    glowColor: '168, 85, 247',
   },
   {
     icon: '🔬',
@@ -47,13 +52,14 @@ const areas = [
     href: '/blog?category=Lab+Experiments',
     color: 'rgba(251, 146, 60, 0.1)',
     borderColor: 'rgba(251, 146, 60, 0.25)',
+    glowColor: '251, 146, 60',
   },
 ];
 ---
 
 <section class="section" aria-labelledby="focus-areas-heading">
   <div class="container">
-    <div class="text-center" style="margin-bottom: var(--space-12);">
+    <div class="text-center reveal" style="margin-bottom: var(--space-12);">
       <h2 class="section-title" id="focus-areas-heading">Focus Areas</h2>
       <p class="section-subtitle" style="margin: 0 auto;">
         Six domains. All lab-tested. No theory without evidence.
@@ -61,15 +67,17 @@ const areas = [
     </div>
 
     <div class="grid-3" role="list" aria-label="Research focus areas">
-      {areas.map(area => (
+      {areas.map((area, i) => (
         <a
           href={area.href}
-          class="focus-card"
+          class="focus-card reveal reveal--up"
           role="listitem"
           aria-label={`${area.title}: ${area.description}`}
-          style={`--card-accent: ${area.color}; --card-border: ${area.borderColor};`}
+          style={`--card-accent: ${area.color}; --card-border: ${area.borderColor}; --card-glow: ${area.glowColor}; --reveal-delay: ${i * 0.08}s;`}
         >
-          <span class="focus-icon" aria-hidden="true">{area.icon}</span>
+          <div class="focus-icon-wrap" aria-hidden="true">
+            <span class="focus-icon">{area.icon}</span>
+          </div>
           <h3>{area.title}</h3>
           <p>{area.description}</p>
           <span class="focus-card-link">View research →</span>
@@ -83,6 +91,24 @@ const areas = [
   .focus-card {
     text-decoration: none;
     display: block;
+  }
+
+  .focus-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-lg);
+    background: var(--card-accent);
+    border: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-4);
+    transition: all var(--transition-base);
+  }
+
+  .focus-card:hover .focus-icon-wrap {
+    transform: scale(1.1) rotate(-3deg);
+    box-shadow: 0 0 20px rgba(var(--card-glow), 0.3);
   }
 
   .focus-card-link {

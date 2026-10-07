@@ -18,7 +18,7 @@ function getReadTime(body?: string): number {
 
 <section class="latest-posts" aria-labelledby="latest-posts-heading">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div>
         <h2 class="section-title" id="latest-posts-heading">Latest Research</h2>
         <p class="section-subtitle">Fresh from the lab. Evidence-backed findings.</p>
@@ -30,18 +30,20 @@ function getReadTime(body?: string): number {
 
     {latestPosts.length > 0 ? (
       <div class="grid-3">
-        {latestPosts.map(post => (
-          <BlogCard
-            title={post.data.title}
-            slug={post.id.replace(/\.md$/, '')}
-            excerpt={post.data.description}
-            date={post.data.pubDate}
-            author={post.data.author}
-            category={post.data.category}
-            readTime={getReadTime(post.body)}
-            image={post.data.image}
-            difficulty={post.data.difficulty}
-          />
+        {latestPosts.map((post, i) => (
+          <div class="reveal reveal--up" style={`--reveal-delay: ${i * 0.1}s;`}>
+            <BlogCard
+              title={post.data.title}
+              slug={post.id.replace(/\.md$/, '')}
+              excerpt={post.data.description}
+              date={post.data.pubDate}
+              author={post.data.author}
+              category={post.data.category}
+              readTime={getReadTime(post.body)}
+              image={post.data.image}
+              difficulty={post.data.difficulty}
+            />
+          </div>
         ))}
       </div>
     ) : (

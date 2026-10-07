@@ -66,7 +66,7 @@ const siteTitle = title === 'SHREWD.' ? 'SHREWD. — Security, Tested.' : `${tit
   <body>
     <slot />
 
-    <!-- Theme toggle & mobile menu script -->
+    <!-- Theme toggle, mobile menu, scroll reveal & header scroll effect -->
     <script>
       // Theme toggle
       const themeToggle = document.getElementById('theme-toggle');
@@ -105,6 +105,49 @@ const siteTitle = title === 'SHREWD.' ? 'SHREWD. — Security, Tested.' : `${tit
           siteNav?.classList.remove('open');
         });
       });
+
+      // ─── Scroll Reveal (IntersectionObserver) ───
+      const revealElements = document.querySelectorAll('.reveal, .reveal--left, .reveal--right, .reveal--up');
+
+      if (revealElements.length > 0 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.08,
+            rootMargin: '0px 0px -40px 0px',
+          }
+        );
+
+        revealElements.forEach((el) => revealObserver.observe(el));
+      } else {
+        // If reduced motion, show everything immediately
+        revealElements.forEach((el) => el.classList.add('revealed'));
+      }
+
+      // ─── Header Scroll Effect ───
+      const header = document.querySelector('.site-header');
+
+      if (header) {
+        let lastScroll = 0;
+        const scrollThreshold = 20;
+
+        window.addEventListener('scroll', () => {
+          const currentScroll = window.scrollY;
+          if (currentScroll > scrollThreshold) {
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('scrolled');
+          }
+          lastScroll = currentScroll;
+        }, { passive: true });
+      }
     </script>
   </body>
 </html>

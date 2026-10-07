@@ -13,7 +13,7 @@ import Footer from '../components/Footer.astro';
   <main id="main-content">
     <!-- Page Hero -->
     <section class="page-hero">
-      <div class="container">
+      <div class="container reveal">
         <div class="badge badge--cyan" style="margin-bottom: var(--space-4);">About</div>
         <h1 class="page-title">
           Security Research<br />
@@ -31,7 +31,7 @@ import Footer from '../components/Footer.astro';
       <div class="container">
         <div class="content-block">
           <!-- Left: Mission -->
-          <div>
+          <div class="reveal reveal--left">
             <h2 style="margin-bottom: var(--space-6);">Our Mission</h2>
             <p style="margin-bottom: var(--space-4);">
               The cybersecurity space is full of blog posts that tell you <em>what</em>
@@ -49,23 +49,23 @@ import Footer from '../components/Footer.astro';
           </div>
 
           <!-- Right: Stats -->
-          <div>
+          <div class="reveal reveal--right">
             <div class="stat-grid">
               <div class="stat-card">
-                <span class="stat-number">100%</span>
+                <span class="stat-number" data-count="100" data-suffix="%">0%</span>
                 <div class="stat-label">Lab-tested content</div>
               </div>
               <div class="stat-card">
-                <span class="stat-number">0</span>
+                <span class="stat-number" data-count="0">0</span>
                 <div class="stat-label">Theory-only posts</div>
               </div>
               <div class="stat-card">
-                <span class="stat-number">7</span>
+                <span class="stat-number" data-count="7">0</span>
                 <div class="stat-label">Research steps every time</div>
               </div>
               <div class="stat-card">
-                <span class="stat-number">∞</span>
-                <div class="stat-label">Curiousity</div>
+                <span class="stat-number stat-number--symbol">∞</span>
+                <div class="stat-label">Curiosity</div>
               </div>
             </div>
           </div>
@@ -73,7 +73,7 @@ import Footer from '../components/Footer.astro';
 
         <!-- Methodology Deep Dive -->
         <div style="margin: var(--space-16) 0;">
-          <h2 style="margin-bottom: var(--space-8);">The Methodology</h2>
+          <h2 class="reveal" style="margin-bottom: var(--space-8);">The Methodology</h2>
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-4);">
             {[
               { num: '01', label: 'Question', desc: 'Every post starts with a specific, testable question.' },
@@ -83,8 +83,8 @@ import Footer from '../components/Footer.astro';
               { num: '05', label: 'Fix', desc: 'If we found a problem, we implement and document the remediation.' },
               { num: '06', label: 'Retest', desc: 'We rerun the test after fixing to confirm the remediation worked.' },
               { num: '07', label: 'Result', desc: 'A clear, evidence-backed conclusion with a specific recommendation.' },
-            ].map(step => (
-              <div class="info-card">
+            ].map((step, i) => (
+              <div class="info-card reveal reveal--up" style={`--reveal-delay: ${i * 0.07}s;`}>
                 <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-cyan); font-weight: 700; margin-bottom: var(--space-2);">{step.num}</div>
                 <div style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);">{step.label}</div>
                 <div style="font-size: 0.875rem; color: var(--color-text-muted);">{step.desc}</div>
@@ -95,7 +95,7 @@ import Footer from '../components/Footer.astro';
 
         <!-- Focus Areas -->
         <div>
-          <h2 style="margin-bottom: var(--space-6);">What We Cover</h2>
+          <h2 class="reveal" style="margin-bottom: var(--space-6);">What We Cover</h2>
           <div class="grid-2" style="gap: var(--space-4);">
             {[
               { icon: '🪟', title: 'Windows Security', desc: 'Hardening Windows 10/11 and Server against real-world attack techniques.' },
@@ -104,8 +104,8 @@ import Footer from '../components/Footer.astro';
               { icon: '🖥️', title: 'Windows Server', desc: 'Active Directory, GPO, RDP hardening, and server security baselines.' },
               { icon: '🛡️', title: 'Hardening & Compliance', desc: 'CIS Benchmarks, DISA STIGs, and NIST framework implementation.' },
               { icon: '🔬', title: 'Lab Experiments', desc: 'Controlled attack and defense tests with documented evidence.' },
-            ].map(area => (
-              <div class="info-card" style="display: flex; gap: var(--space-4); align-items: flex-start;">
+            ].map((area, i) => (
+              <div class="info-card reveal reveal--up" style={`display: flex; gap: var(--space-4); align-items: flex-start; --reveal-delay: ${i * 0.06}s;`}>
                 <span style="font-size: 1.5rem; flex-shrink: 0;">{area.icon}</span>
                 <div>
                   <div style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-1);">{area.title}</div>
@@ -120,7 +120,7 @@ import Footer from '../components/Footer.astro';
 
     <!-- CTA -->
     <section class="cta-section" aria-labelledby="about-cta-heading">
-      <div class="container">
+      <div class="container reveal">
         <h2 id="about-cta-heading">
           Want to contribute?<br />
           <span style="color: var(--color-cyan);">We review every submission.</span>
@@ -136,3 +136,41 @@ import Footer from '../components/Footer.astro';
 
   <Footer />
 </BaseLayout>
+
+<script>
+  // Stat counter animation
+  function animateCounters() {
+    const statNumbers = document.querySelectorAll('.stat-number[data-count]');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          const target = parseInt(el.dataset.count || '0');
+          const suffix = el.dataset.suffix || '';
+          const duration = 1500;
+          const start = performance.now();
+
+          function update(now: number) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(eased * target);
+            el.textContent = current + suffix;
+            if (progress < 1) {
+              requestAnimationFrame(update);
+            }
+          }
+
+          requestAnimationFrame(update);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    statNumbers.forEach(el => observer.observe(el));
+  }
+
+  animateCounters();
+</script>
