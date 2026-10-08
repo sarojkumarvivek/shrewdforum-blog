@@ -1,7 +1,7 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <BaseLayout
@@ -14,14 +14,17 @@ import Footer from '../components/Footer.astro';
     <!-- Page Hero -->
     <section class="page-hero">
       <div class="container">
-        <div class="badge badge--cyan" style="margin-bottom: var(--space-4);">Write For Us</div>
+        <div class="badge badge--cyan" style="margin-bottom: var(--space-4);">
+          Write For Us
+        </div>
         <h1 class="page-title">
           Share Your<br />
           <span style="color: var(--color-cyan);">Lab Findings.</span>
         </h1>
         <p class="page-subtitle">
-          We're looking for practitioners who test before they publish.
-          If you've found something interesting in the lab, we want to hear about it.
+          We're looking for practitioners who test before they publish. If
+          you've found something interesting in the lab, we want to hear about
+          it.
         </p>
       </div>
     </section>
@@ -31,61 +34,114 @@ import Footer from '../components/Footer.astro';
         <div class="content-block">
           <!-- Left: Guidelines -->
           <div>
-            <h2 style="margin-bottom: var(--space-6);">Submission Guidelines</h2>
+            <h2 style="margin-bottom: var(--space-6);">
+              Submission Guidelines
+            </h2>
 
-            <div class="info-card" style="margin-bottom: var(--space-4); border-left: 3px solid var(--color-cyan);">
-              <div style="font-weight: 700; color: var(--color-cyan); margin-bottom: var(--space-2); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">The Golden Rule</div>
+            <div
+              class="info-card"
+              style="margin-bottom: var(--space-4); border-left: 3px solid var(--color-cyan);"
+            >
+              <div
+                style="font-weight: 700; color: var(--color-cyan); margin-bottom: var(--space-2); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;"
+              >
+                The Golden Rule
+              </div>
               <p style="margin: 0; font-size: 0.9375rem;">
-                Every claim must be backed by lab evidence. No theoretical articles. No "you should probably" statements without proof.
+                Every claim must be backed by lab evidence. No theoretical
+                articles. No "you should probably" statements without proof.
               </p>
             </div>
 
-            <h3 style="margin: var(--space-6) 0 var(--space-4);">What We Accept</h3>
-            <ul style="list-style: none; display: flex; flex-direction: column; gap: var(--space-3);">
-              {[
-                'Vulnerability analysis with real CVE details and CVSS scores',
-                'Windows security hardening with before/after evidence',
-                'Nessus/Tenable scan analysis with real findings',
-                'Attack and defense lab experiments with documented results',
-                'CIS Benchmark or DISA STIG implementation guides',
-                'Incident response walkthroughs from lab environments',
-              ].map(item => (
-                <li style="display: flex; gap: var(--space-3); align-items: flex-start; color: var(--color-text-muted); font-size: 0.9375rem;">
-                  <span style="color: var(--color-cyan); font-weight: 700; flex-shrink: 0;">✓</span>
-                  {item}
-                </li>
-              ))}
+            <h3 style="margin: var(--space-6) 0 var(--space-4);">
+              What We Accept
+            </h3>
+            <ul
+              style="list-style: none; display: flex; flex-direction: column; gap: var(--space-3);"
+            >
+              {
+                [
+                  "Vulnerability analysis with real CVE details and CVSS scores",
+                  "Windows security hardening with before/after evidence",
+                  "Nessus/Tenable scan analysis with real findings",
+                  "Attack and defense lab experiments with documented results",
+                  "CIS Benchmark or DISA STIG implementation guides",
+                  "Incident response walkthroughs from lab environments",
+                ].map((item) => (
+                  <li style="display: flex; gap: var(--space-3); align-items: flex-start; color: var(--color-text-muted); font-size: 0.9375rem;">
+                    <span style="color: var(--color-cyan); font-weight: 700; flex-shrink: 0;">
+                      ✓
+                    </span>
+                    {item}
+                  </li>
+                ))
+              }
             </ul>
 
-            <h3 style="margin: var(--space-6) 0 var(--space-4);">What We Don't Accept</h3>
-            <ul style="list-style: none; display: flex; flex-direction: column; gap: var(--space-3);">
-              {[
-                'News roundups or commentary without original research',
-                'Articles without lab evidence or reproducible steps',
-                'Product reviews or sponsored content',
-                'Beginner tutorials that don\'t add new technical insight',
-              ].map(item => (
-                <li style="display: flex; gap: var(--space-3); align-items: flex-start; color: var(--color-text-muted); font-size: 0.9375rem;">
-                  <span style="color: var(--color-red); font-weight: 700; flex-shrink: 0;">✗</span>
-                  {item}
-                </li>
-              ))}
+            <h3 style="margin: var(--space-6) 0 var(--space-4);">
+              What We Don't Accept
+            </h3>
+            <ul
+              style="list-style: none; display: flex; flex-direction: column; gap: var(--space-3);"
+            >
+              {
+                [
+                  "News roundups or commentary without original research",
+                  "Articles without lab evidence or reproducible steps",
+                  "Product reviews or sponsored content",
+                  "Beginner tutorials that don't add new technical insight",
+                ].map((item) => (
+                  <li style="display: flex; gap: var(--space-3); align-items: flex-start; color: var(--color-text-muted); font-size: 0.9375rem;">
+                    <span style="color: var(--color-red); font-weight: 700; flex-shrink: 0;">
+                      ✗
+                    </span>
+                    {item}
+                  </li>
+                ))
+              }
             </ul>
           </div>
 
           <!-- Right: Process -->
           <div>
             <h2 style="margin-bottom: var(--space-6);">The Process</h2>
-            <div style="display: flex; flex-direction: column; gap: var(--space-4);">
-              {[
-                { num: '1', title: 'Submit your pitch', desc: 'Fill out the form with your topic, methodology, and lab setup.' },
-                { num: '2', title: 'We review', desc: 'We\'ll review within 5 business days and let you know if it fits SHREWD.' },
-                { num: '3', title: 'Write your article', desc: 'Follow the Question→Research→Lab→Evidence→Fix→Retest→Result structure.' },
-                { num: '4', title: 'Submit via CMS', desc: 'Log in at /admin with your GitHub account and submit as a draft.' },
-                { num: '5', title: 'Review & publish', desc: 'We\'ll review your draft, leave feedback, and merge when ready.' },
-              ].map(step => (
-                <div class="info-card" style="display: flex; gap: var(--space-4); align-items: flex-start;">
-                  <div style="
+            <div
+              style="display: flex; flex-direction: column; gap: var(--space-4);"
+            >
+              {
+                [
+                  {
+                    num: "1",
+                    title: "Submit your pitch",
+                    desc: "Fill out the form with your topic, methodology, and lab setup.",
+                  },
+                  {
+                    num: "2",
+                    title: "We review",
+                    desc: "We'll review within 5 business days and let you know if it fits SHREWD.",
+                  },
+                  {
+                    num: "3",
+                    title: "Write your article",
+                    desc: "Follow the Question→Research→Lab→Evidence→Fix→Retest→Result structure.",
+                  },
+                  {
+                    num: "4",
+                    title: "Submit via CMS",
+                    desc: "Log in at /admin with your GitHub account and submit as a draft.",
+                  },
+                  {
+                    num: "5",
+                    title: "Review & publish",
+                    desc: "We'll review your draft, leave feedback, and merge when ready.",
+                  },
+                ].map((step) => (
+                  <div
+                    class="info-card"
+                    style="display: flex; gap: var(--space-4); align-items: flex-start;"
+                  >
+                    <div
+                      style="
                     width: 32px;
                     height: 32px;
                     background: linear-gradient(135deg, #0070f3, #00d2ff);
@@ -97,13 +153,21 @@ import Footer from '../components/Footer.astro';
                     font-weight: 700;
                     color: white;
                     flex-shrink: 0;
-                  ">{step.num}</div>
-                  <div>
-                    <div style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-1);">{step.title}</div>
-                    <div style="font-size: 0.875rem; color: var(--color-text-muted);">{step.desc}</div>
+                  "
+                    >
+                      {step.num}
+                    </div>
+                    <div>
+                      <div style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-1);">
+                        {step.title}
+                      </div>
+                      <div style="font-size: 0.875rem; color: var(--color-text-muted);">
+                        {step.desc}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              }
             </div>
           </div>
         </div>
@@ -112,14 +176,24 @@ import Footer from '../components/Footer.astro';
         <div style="max-width: 640px; margin-top: var(--space-16);">
           <h2 style="margin-bottom: var(--space-8);">Submit a Pitch</h2>
           <form
-            name="pitch"
+            action="https://api.web3forms.com/submit"
             method="POST"
-            data-netlify="true"
             class="contact-form"
             id="pitch-form"
             aria-label="Article pitch submission form"
           >
-            <input type="hidden" name="form-name" value="pitch" />
+            <!-- Paste your Web3Forms Access Key here -->
+            <input
+              type="hidden"
+              name="access_key"
+              value="595a1d98-a4ef-4aa8-9569-a26651bedc5e"
+            />
+            <input
+              type="hidden"
+              name="subject"
+              value="New Contributor Application - SHREWD"
+            />
+            <input type="hidden" name="from_name" value="SHREWD Contributor" />
 
             <div class="form-group">
               <label class="form-label" for="pitch-name">Your Name</label>
@@ -148,7 +222,9 @@ import Footer from '../components/Footer.astro';
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="pitch-github">GitHub Username (optional)</label>
+              <label class="form-label" for="pitch-github"
+                >GitHub Username (optional)</label
+              >
               <input
                 class="form-input"
                 type="text"
@@ -160,7 +236,12 @@ import Footer from '../components/Footer.astro';
 
             <div class="form-group">
               <label class="form-label" for="pitch-category">Category</label>
-              <select class="form-select" id="pitch-category" name="category" required>
+              <select
+                class="form-select"
+                id="pitch-category"
+                name="category"
+                required
+              >
                 <option value="">Select a category...</option>
                 <option>Windows Security</option>
                 <option>Vulnerability Management</option>
@@ -172,7 +253,9 @@ import Footer from '../components/Footer.astro';
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="pitch-title">Proposed Article Title</label>
+              <label class="form-label" for="pitch-title"
+                >Proposed Article Title</label
+              >
               <input
                 class="form-input"
                 type="text"
@@ -184,18 +267,25 @@ import Footer from '../components/Footer.astro';
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="pitch-description">Describe Your Research (lab setup, tools, question you're answering)</label>
+              <label class="form-label" for="pitch-description"
+                >Describe Your Research (lab setup, tools, question you're
+                answering)</label
+              >
               <textarea
                 class="form-textarea"
                 id="pitch-description"
                 name="description"
                 required
                 placeholder="Describe your lab setup, what tool or technique you're testing, and what question you want to answer..."
-                rows="5"
-              ></textarea>
+                rows="5"></textarea>
             </div>
 
-            <button type="submit" class="btn btn--primary" id="pitch-submit-btn" style="width: 100%; justify-content: center;">
+            <button
+              type="submit"
+              class="btn btn--primary"
+              id="pitch-submit-btn"
+              style="width: 100%; justify-content: center;"
+            >
               Submit Pitch →
             </button>
           </form>

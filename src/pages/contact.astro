@@ -1,7 +1,7 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <BaseLayout
@@ -14,11 +14,13 @@ import Footer from '../components/Footer.astro';
     <!-- Page Hero -->
     <section class="page-hero">
       <div class="container">
-        <div class="badge badge--cyan" style="margin-bottom: var(--space-4);">Contact</div>
+        <div class="badge badge--cyan" style="margin-bottom: var(--space-4);">
+          Contact
+        </div>
         <h1 class="page-title">Get In Touch</h1>
         <p class="page-subtitle">
-          Questions about our research? Want to collaborate? Found a factual error?
-          We read every message.
+          Questions about our research? Want to collaborate? Found a factual
+          error? We read every message.
         </p>
       </div>
     </section>
@@ -30,14 +32,24 @@ import Footer from '../components/Footer.astro';
           <div>
             <h2 style="margin-bottom: var(--space-8);">Send a Message</h2>
             <form
-              name="contact"
+              action="https://api.web3forms.com/submit"
               method="POST"
-              data-netlify="true"
               class="contact-form"
               id="contact-form"
               aria-label="Contact form"
             >
-              <input type="hidden" name="form-name" value="contact" />
+              <!-- Paste your Web3Forms Access Key here -->
+              <input
+                type="hidden"
+                name="access_key"
+                value="595a1d98-a4ef-4aa8-9569-a26651bedc5e"
+              />
+              <input
+                type="hidden"
+                name="subject"
+                value="New Contact Message from SHREWD"
+              />
+              <input type="hidden" name="from_name" value="SHREWD Website" />
 
               <div class="form-group">
                 <label class="form-label" for="contact-name">Name</label>
@@ -84,8 +96,7 @@ import Footer from '../components/Footer.astro';
                   name="message"
                   required
                   placeholder="What's on your mind?"
-                  rows="5"
-                ></textarea>
+                  rows="5"></textarea>
               </div>
 
               <button
@@ -101,34 +112,61 @@ import Footer from '../components/Footer.astro';
 
           <!-- Right: Info -->
           <div>
-            <h2 style="margin-bottom: var(--space-6);">Other Ways to Connect</h2>
+            <h2 style="margin-bottom: var(--space-6);">
+              Other Ways to Connect
+            </h2>
 
-            <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            <div
+              style="display: flex; flex-direction: column; gap: var(--space-4);"
+            >
               <div class="info-card">
-                <div style="font-size: 1.5rem; margin-bottom: var(--space-3);">🐛</div>
-                <div style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);">Found an Error?</div>
+                <div style="font-size: 1.5rem; margin-bottom: var(--space-3);">
+                  🐛
+                </div>
+                <div
+                  style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);"
+                >
+                  Found an Error?
+                </div>
                 <p style="font-size: 0.9375rem; margin: 0;">
-                  If any of our lab findings are factually incorrect, please tell us.
-                  We'll update the post with a correction notice and give you credit.
+                  If any of our lab findings are factually incorrect, please
+                  tell us. We'll update the post with a correction notice and
+                  give you credit.
                 </p>
               </div>
 
               <div class="info-card">
-                <div style="font-size: 1.5rem; margin-bottom: var(--space-3);">🔬</div>
-                <div style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);">Collaboration</div>
+                <div style="font-size: 1.5rem; margin-bottom: var(--space-3);">
+                  🔬
+                </div>
+                <div
+                  style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);"
+                >
+                  Collaboration
+                </div>
                 <p style="font-size: 0.9375rem; margin: 0;">
-                  We're open to joint research projects, lab sharing, and tool development.
-                  If you have an interesting question, let's find the answer together.
+                  We're open to joint research projects, lab sharing, and tool
+                  development. If you have an interesting question, let's find
+                  the answer together.
                 </p>
               </div>
 
               <div class="info-card">
-                <div style="font-size: 1.5rem; margin-bottom: var(--space-3);">✍️</div>
-                <div style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);">Write For Us</div>
+                <div style="font-size: 1.5rem; margin-bottom: var(--space-3);">
+                  ✍️
+                </div>
+                <div
+                  style="font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);"
+                >
+                  Write For Us
+                </div>
                 <p style="font-size: 0.9375rem; margin: 0 0 var(--space-3);">
-                  Want to contribute research? Check out our writer guidelines first.
+                  Want to contribute research? Check out our writer guidelines
+                  first.
                 </p>
-                <a href="/write-for-us" class="btn btn--outline btn--sm">View Guidelines →</a>
+                <a href="/write-for-us" class="btn btn--outline btn--sm"
+                  >View Guidelines →</a
+                >
               </div>
             </div>
           </div>
