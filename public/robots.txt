@@ -4,4 +4,4 @@ Allow: /
 # Block admin panel from indexing
 Disallow: /admin/
 
-Sitemap: https://shrewd-blog.pages.dev/sitemap.xml
+Sitemap: https://forum.shr3wd.workers.dev/sitemap-index.xml

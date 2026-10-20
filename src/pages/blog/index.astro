@@ -5,13 +5,13 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import BlogCard from '../../components/BlogCard.astro';
 
+import { getReadingTime } from '../../utils/readingTime';
+
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 
 const sortedPosts = allPosts.sort((a, b) =>
   b.data.pubDate.getTime() - a.data.pubDate.getTime()
 );
-
-const POSTS_PER_PAGE = 10;
 
 const categories = [
   'All',
@@ -22,10 +22,6 @@ const categories = [
   'Hardening & Compliance',
   'Lab Experiments',
 ];
-
-function getReadTime(body?: string): number {
-  return Math.max(1, Math.ceil((body || '').split(/\s+/).length / 238));
-}
 ---
 
 <BaseLayout
@@ -68,7 +64,7 @@ function getReadTime(body?: string): number {
                 date={post.data.pubDate}
                 author={post.data.author}
                 category={post.data.category}
-                readTime={getReadTime(post.body)}
+                readTime={getReadingTime(post.body)}
                 image={post.data.image}
                 difficulty={post.data.difficulty}
               />
@@ -104,32 +100,73 @@ function getReadTime(body?: string): number {
   const gridItems = document.querySelectorAll('.blog-grid-item');
   const emptyState = document.getElementById('empty-state');
 
+  function setCategory(category: string, updateUrl = false) {
+    let matchedBtn: HTMLButtonElement | null = null;
+
+    filterBtns.forEach(b => {
+      const btn = b as HTMLButtonElement;
+      const isMatch = (btn.dataset.category || '').toLowerCase() === category.toLowerCase();
+      if (isMatch) matchedBtn = btn;
+      btn.classList.toggle('active', isMatch);
+      btn.setAttribute('aria-pressed', String(isMatch));
+    });
+
+    // Default to 'All' if category not found
+    if (!matchedBtn) {
+      filterBtns.forEach(b => {
+        const btn = b as HTMLButtonElement;
+        const isAll = btn.dataset.category === 'All';
+        btn.classList.toggle('active', isAll);
+        btn.setAttribute('aria-pressed', String(isAll));
+      });
+      category = 'All';
+    }
+
+    let visibleCount = 0;
+    gridItems.forEach(item => {
+      const el = item as HTMLElement;
+      const itemCategory = el.dataset.category;
+      const show = category === 'All' || itemCategory?.toLowerCase() === category.toLowerCase();
+      el.style.display = show ? 'flex' : 'none';
+      if (show) visibleCount++;
+    });
+
+    if (emptyState) {
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      if (category === 'All') {
+        url.searchParams.delete('category');
+      } else {
+        url.searchParams.set('category', category);
+      }
+      window.history.pushState({ category }, '', url.toString());
+    }
+  }
+
+  // Handle click on filter buttons
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      const category = (btn as HTMLButtonElement).dataset.category;
-
-      // Update active state
-      filterBtns.forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-pressed', 'false');
-      });
-      btn.classList.add('active');
-      btn.setAttribute('aria-pressed', 'true');
-
-      // Filter items
-      let visibleCount = 0;
-      gridItems.forEach(item => {
-        const el = item as HTMLElement;
-        const itemCategory = el.dataset.category;
-        const show = category === 'All' || itemCategory === category;
-        el.style.display = show ? 'flex' : 'none';
-        if (show) visibleCount++;
-      });
-
-      // Show empty state if no results
-      if (emptyState) {
-        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-      }
+      const category = (btn as HTMLButtonElement).dataset.category || 'All';
+      setCategory(category, true);
     });
   });
+
+  // Handle URL query parameter on initial load
+  function initFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const catFromUrl = params.get('category');
+    if (catFromUrl) {
+      setCategory(catFromUrl, false);
+    }
+  }
+
+  window.addEventListener('popstate', (e) => {
+    const category = e.state?.category || new URLSearchParams(window.location.search).get('category') || 'All';
+    setCategory(category, false);
+  });
+
+  initFromUrl();
 </script>

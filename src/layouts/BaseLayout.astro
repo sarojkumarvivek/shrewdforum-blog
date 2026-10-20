@@ -12,10 +12,18 @@ const {
   title,
   description = 'Practical cybersecurity lab experiments, Windows security hardening, vulnerability management, and evidence-driven research. Every finding backed by lab logs and verified fixes.',
   image = '/og-default.png',
-  canonicalURL = Astro.url.href,
+  canonicalURL,
 } = Astro.props;
 
 const siteTitle = title === 'SHREWD.' || title === 'shr3wd.' ? 'shr3wd. — Security, Tested.' : `${title} | shr3wd.`;
+const cfBeaconToken = import.meta.env.PUBLIC_CLOUDFLARE_BEACON_TOKEN || import.meta.env.CLOUDFLARE_BEACON_TOKEN;
+
+// Ensure absolute URLs for canonical and Open Graph
+const siteOrigin = Astro.site ? Astro.site.origin : (import.meta.env.PUBLIC_SITE_URL || 'https://forum.shr3wd.workers.dev');
+const finalCanonical = canonicalURL || new URL(Astro.url.pathname, siteOrigin).href;
+const finalOgImage = image.startsWith('http://') || image.startsWith('https://')
+  ? image
+  : new URL(image.startsWith('/') ? image : `/${image}`, siteOrigin).href;
 ---
 
 <!doctype html>
@@ -23,31 +31,43 @@ const siteTitle = title === 'SHREWD.' || title === 'shr3wd.' ? 'shr3wd. — Secu
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="generator" content={Astro.generator} />
+
+    <!-- Google Fonts Preconnect & Stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Primary Meta Tags -->
     <title>{siteTitle}</title>
     <meta name="title" content={siteTitle} />
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
+    <link rel="canonical" href={finalCanonical} />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:url" content={finalCanonical} />
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={finalOgImage} />
     <meta property="og:site_name" content="SHREWD." />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:url" content={finalCanonical} />
     <meta property="twitter:title" content={siteTitle} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={image} />
+    <meta property="twitter:image" content={finalOgImage} />
 
-    <!-- Favicon -->
+    <!-- Favicon & Manifest -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
+    <!-- Sitemaps & RSS -->
+    <link rel="sitemap" href="/sitemap.xml" />
+    <link rel="alternate" type="application/rss+xml" title="SHREWD. Cybersecurity Research RSS Feed" href="/rss.xml" />
 
     <!-- Theme initialization — must run before render to avoid flash -->
     <script is:inline>
@@ -149,6 +169,13 @@ const siteTitle = title === 'SHREWD.' || title === 'shr3wd.' ? 'shr3wd. — Secu
         }, { passive: true });
       }
     </script>
-    <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "7ef49c2bca8a421fab4ab6b2f1e3504a"}'></script><!-- End Cloudflare Web Analytics -->
+    {cfBeaconToken && (
+      <script
+        type="module"
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={`{"token": "${cfBeaconToken}"}`}
+        crossorigin="anonymous"
+      ></script>
+    )}
   </body>
 </html>

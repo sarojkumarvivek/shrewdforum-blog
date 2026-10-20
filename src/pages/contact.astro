@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+
+const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || import.meta.env.WEB3FORMS_ACCESS_KEY || "";
 ---
 
 <BaseLayout
@@ -38,11 +40,11 @@ import Footer from "../components/Footer.astro";
               id="contact-form"
               aria-label="Contact form"
             >
-              <!-- Paste your Web3Forms Access Key here -->
+              <!-- Web3Forms Access Key from environment variables -->
               <input
                 type="hidden"
                 name="access_key"
-                value="595a1d98-a4ef-4aa8-9569-a26651bedc5e"
+                value={web3FormsAccessKey}
               />
               <input
                 type="hidden"
@@ -50,6 +52,9 @@ import Footer from "../components/Footer.astro";
                 value="New Contact Message from SHREWD"
               />
               <input type="hidden" name="from_name" value="SHREWD Website" />
+
+              <!-- Anti-spam Honeypot (hidden from real users) -->
+              <input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1" autocomplete="off" />
 
               <div class="form-group">
                 <label class="form-label" for="contact-name">Name</label>
@@ -59,6 +64,7 @@ import Footer from "../components/Footer.astro";
                   id="contact-name"
                   name="name"
                   required
+                  maxlength="100"
                   autocomplete="name"
                   placeholder="Your name"
                 />
@@ -72,14 +78,15 @@ import Footer from "../components/Footer.astro";
                   id="contact-email"
                   name="email"
                   required
+                  maxlength="150"
                   autocomplete="email"
                   placeholder="your@email.com"
                 />
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="contact-subject">Subject</label>
-                <select class="form-select" id="contact-subject" name="subject">
+                <label class="form-label" for="contact-topic">Topic</label>
+                <select class="form-select" id="contact-topic" name="topic">
                   <option value="general">General Question</option>
                   <option value="research">Research Collaboration</option>
                   <option value="correction">Factual Correction</option>
@@ -95,6 +102,7 @@ import Footer from "../components/Footer.astro";
                   id="contact-message"
                   name="message"
                   required
+                  maxlength="5000"
                   placeholder="What's on your mind?"
                   rows="5"></textarea>
               </div>
@@ -174,6 +182,26 @@ import Footer from "../components/Footer.astro";
       </div>
     </section>
   </main>
+
+  <script>
+    const contactForm = document.getElementById('contact-form') as HTMLFormElement | null;
+    const submitBtn = document.getElementById('contact-submit-btn') as HTMLButtonElement | null;
+
+    if (contactForm && submitBtn) {
+      contactForm.addEventListener('submit', (e) => {
+        const lastSubmit = sessionStorage.getItem('last_contact_submit');
+        const now = Date.now();
+        if (lastSubmit && now - parseInt(lastSubmit, 10) < 15000) {
+          e.preventDefault();
+          alert('Please wait a few seconds before submitting another message.');
+          return;
+        }
+        sessionStorage.setItem('last_contact_submit', String(now));
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending Message...';
+      });
+    }
+  </script>
 
   <Footer />
 </BaseLayout>

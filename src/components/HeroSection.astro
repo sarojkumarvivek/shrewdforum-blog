@@ -55,7 +55,24 @@
           <span class="terminal-title">shrewd@lab: ~ bash</span>
         </div>
         <div class="terminal-body" id="terminal-output">
-          <!-- Lines will be typed in by JS -->
+          <div><span class="terminal-prompt">$</span> <span class="terminal-cmd">nmap -sV --script vuln 192.168.1.1</span></div>
+          <div class="terminal-output">Starting Nmap 7.94 ( https://nmap.org )</div>
+          <div class="terminal-output">Scan report for 192.168.1.1</div>
+          <br />
+          <div class="terminal-output">PORT     STATE SERVICE  VERSION</div>
+          <div><span class="terminal-cve">445/tcp</span><span class="terminal-output">  open  msrpc    Microsoft Windows RPC</span></div>
+          <div class="terminal-output">| smb-vuln-ms17-010:</div>
+          <div><span class="terminal-vulnerable">|   VULNERABLE</span></div>
+          <div class="terminal-output">|   Risk factor: <span class="terminal-high">HIGH</span></div>
+          <div class="terminal-output">|   CVE: <span class="terminal-cve">CVE-2017-0144</span></div>
+          <div class="terminal-output">|   CVSS: <span class="terminal-high">9.3</span></div>
+          <div class="terminal-output">|_ EternalBlue SMB Remote Code Execution</div>
+          <br />
+          <div class="terminal-output">3389/tcp open  ms-wbt-server</div>
+          <div class="terminal-output">| rdp-vuln-ms12-020:</div>
+          <div><span class="terminal-vulnerable">|   VULNERABLE (DoS)</span></div>
+          <br />
+          <div><span class="terminal-prompt">$</span> <span class="terminal-cursor"></span></div>
         </div>
       </div>
     </div>
@@ -63,8 +80,17 @@
 </section>
 
 <script>
-  // Terminal typing animation
-  const terminalLines = [
+  // Terminal typing animation — secured against DOM XSS (safe DOM manipulation only)
+  interface LineDef {
+    type: 'command' | 'output' | 'blank' | 'cursor' | 'highlight' | 'vulnerable' | 'composite';
+    text?: string;
+    after?: string;
+    prefix?: string;
+    tag?: string;
+    tagClass?: string;
+  }
+
+  const terminalLines: LineDef[] = [
     { type: 'command', text: '$ nmap -sV --script vuln 192.168.1.1' },
     { type: 'output', text: 'Starting Nmap 7.94 ( https://nmap.org )' },
     { type: 'output', text: 'Scan report for 192.168.1.1' },
@@ -73,9 +99,9 @@
     { type: 'highlight', text: '445/tcp', after: '  open  msrpc    Microsoft Windows RPC' },
     { type: 'output', text: '| smb-vuln-ms17-010:' },
     { type: 'vulnerable', text: '|   VULNERABLE' },
-    { type: 'output', text: '|   Risk factor: <span class="terminal-high">HIGH</span>' },
-    { type: 'output', text: '|   CVE: <span class="terminal-cve">CVE-2017-0144</span>' },
-    { type: 'output', text: '|   CVSS: <span class="terminal-high">9.3</span>' },
+    { type: 'composite', prefix: '|   Risk factor: ', tag: 'HIGH', tagClass: 'terminal-high' },
+    { type: 'composite', prefix: '|   CVE: ', tag: 'CVE-2017-0144', tagClass: 'terminal-cve' },
+    { type: 'composite', prefix: '|   CVSS: ', tag: '9.3', tagClass: 'terminal-high' },
     { type: 'output', text: '|_ EternalBlue SMB Remote Code Execution' },
     { type: 'blank' },
     { type: 'output', text: '3389/tcp open  ms-wbt-server' },
@@ -88,6 +114,12 @@
   function buildTerminal() {
     const container = document.getElementById('terminal-output');
     if (!container) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    container.textContent = '';
 
     let lineIndex = 0;
     let charIndex = 0;
@@ -107,7 +139,13 @@
 
       if (line.type === 'cursor') {
         const div = document.createElement('div');
-        div.innerHTML = '<span class="terminal-prompt">$</span> <span class="terminal-cursor"></span>';
+        const prompt = document.createElement('span');
+        prompt.className = 'terminal-prompt';
+        prompt.textContent = '$ ';
+        const cursor = document.createElement('span');
+        cursor.className = 'terminal-cursor';
+        div.appendChild(prompt);
+        div.appendChild(cursor);
         container.appendChild(div);
         return;
       }
@@ -119,9 +157,15 @@
 
       if (line.type === 'command') {
         // Type character by character
-        const fullText = line.text;
+        const fullText = line.text || '';
         if (charIndex === 0) {
-          currentLine.innerHTML = '<span class="terminal-prompt">$</span> <span class="terminal-cmd"></span>';
+          const prompt = document.createElement('span');
+          prompt.className = 'terminal-prompt';
+          prompt.textContent = '$ ';
+          const cmdSpan = document.createElement('span');
+          cmdSpan.className = 'terminal-cmd';
+          currentLine.appendChild(prompt);
+          currentLine.appendChild(cmdSpan);
         }
         const cmdSpan = currentLine.querySelector('.terminal-cmd');
         if (cmdSpan && charIndex < fullText.length - 2) {
@@ -140,11 +184,33 @@
       }
 
       if (line.type === 'highlight') {
-        currentLine.innerHTML = `<span class="terminal-cve">${line.text}</span><span class="terminal-output">${line.after}</span>`;
+        const cveSpan = document.createElement('span');
+        cveSpan.className = 'terminal-cve';
+        cveSpan.textContent = line.text || '';
+        const afterSpan = document.createElement('span');
+        afterSpan.className = 'terminal-output';
+        afterSpan.textContent = line.after || '';
+        currentLine.appendChild(cveSpan);
+        currentLine.appendChild(afterSpan);
       } else if (line.type === 'vulnerable') {
-        currentLine.innerHTML = `<span class="terminal-vulnerable">${line.text}</span>`;
+        const vulnSpan = document.createElement('span');
+        vulnSpan.className = 'terminal-vulnerable';
+        vulnSpan.textContent = line.text || '';
+        currentLine.appendChild(vulnSpan);
+      } else if (line.type === 'composite') {
+        const prefixSpan = document.createElement('span');
+        prefixSpan.className = 'terminal-output';
+        prefixSpan.textContent = line.prefix || '';
+        const tagSpan = document.createElement('span');
+        tagSpan.className = line.tagClass || '';
+        tagSpan.textContent = line.tag || '';
+        currentLine.appendChild(prefixSpan);
+        currentLine.appendChild(tagSpan);
       } else {
-        currentLine.innerHTML = `<span class="terminal-output">${line.text}</span>`;
+        const outSpan = document.createElement('span');
+        outSpan.className = 'terminal-output';
+        outSpan.textContent = line.text || '';
+        currentLine.appendChild(outSpan);
       }
 
       currentLine = null;

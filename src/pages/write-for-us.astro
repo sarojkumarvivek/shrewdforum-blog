@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+
+const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || import.meta.env.WEB3FORMS_ACCESS_KEY || "";
 ---
 
 <BaseLayout
@@ -182,11 +184,11 @@ import Footer from "../components/Footer.astro";
             id="pitch-form"
             aria-label="Article pitch submission form"
           >
-            <!-- Paste your Web3Forms Access Key here -->
+            <!-- Web3Forms Access Key from environment variables -->
             <input
               type="hidden"
               name="access_key"
-              value="595a1d98-a4ef-4aa8-9569-a26651bedc5e"
+              value={web3FormsAccessKey}
             />
             <input
               type="hidden"
@@ -194,6 +196,9 @@ import Footer from "../components/Footer.astro";
               value="New Contributor Application - SHREWD"
             />
             <input type="hidden" name="from_name" value="SHREWD Contributor" />
+
+            <!-- Anti-spam Honeypot (hidden from real users) -->
+            <input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1" autocomplete="off" />
 
             <div class="form-group">
               <label class="form-label" for="pitch-name">Your Name</label>
@@ -203,6 +208,7 @@ import Footer from "../components/Footer.astro";
                 id="pitch-name"
                 name="name"
                 required
+                maxlength="100"
                 autocomplete="name"
                 placeholder="Jane Smith"
               />
@@ -216,6 +222,7 @@ import Footer from "../components/Footer.astro";
                 id="pitch-email"
                 name="email"
                 required
+                maxlength="150"
                 autocomplete="email"
                 placeholder="jane@example.com"
               />
@@ -230,6 +237,7 @@ import Footer from "../components/Footer.astro";
                 type="text"
                 id="pitch-github"
                 name="github"
+                maxlength="39"
                 placeholder="janesmith"
               />
             </div>
@@ -262,6 +270,7 @@ import Footer from "../components/Footer.astro";
                 id="pitch-title"
                 name="article_title"
                 required
+                maxlength="200"
                 placeholder="I Tested X on Y and Here's What I Found"
               />
             </div>
@@ -276,6 +285,7 @@ import Footer from "../components/Footer.astro";
                 id="pitch-description"
                 name="description"
                 required
+                maxlength="5000"
                 placeholder="Describe your lab setup, what tool or technique you're testing, and what question you want to answer..."
                 rows="5"></textarea>
             </div>
@@ -293,6 +303,26 @@ import Footer from "../components/Footer.astro";
       </div>
     </section>
   </main>
+
+  <script>
+    const pitchForm = document.getElementById('pitch-form') as HTMLFormElement | null;
+    const submitBtn = document.getElementById('pitch-submit-btn') as HTMLButtonElement | null;
+
+    if (pitchForm && submitBtn) {
+      pitchForm.addEventListener('submit', (e) => {
+        const lastSubmit = sessionStorage.getItem('last_pitch_submit');
+        const now = Date.now();
+        if (lastSubmit && now - parseInt(lastSubmit, 10) < 15000) {
+          e.preventDefault();
+          alert('Please wait a few seconds before submitting another pitch.');
+          return;
+        }
+        sessionStorage.setItem('last_pitch_submit', String(now));
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting Pitch...';
+      });
+    }
+  </script>
 
   <Footer />
 </BaseLayout>

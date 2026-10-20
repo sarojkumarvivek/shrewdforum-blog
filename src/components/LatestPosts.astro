@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BlogCard from './BlogCard.astro';
+import { getReadingTime } from '../utils/readingTime';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 
@@ -10,10 +11,6 @@ const sortedPosts = posts.sort((a, b) =>
 );
 
 const latestPosts = sortedPosts.slice(0, 3);
-
-function getReadTime(body?: string): number {
-  return Math.max(1, Math.ceil((body || '').split(/\s+/).length / 238));
-}
 ---
 
 <section class="latest-posts" aria-labelledby="latest-posts-heading">
@@ -39,7 +36,7 @@ function getReadTime(body?: string): number {
               date={post.data.pubDate}
               author={post.data.author}
               category={post.data.category}
-              readTime={getReadTime(post.body)}
+              readTime={getReadingTime(post.body)}
               image={post.data.image}
               difficulty={post.data.difficulty}
             />

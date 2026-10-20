@@ -10,7 +10,7 @@ const blogCollection = defineCollection({
     updatedDate: z.coerce.date().optional(),
     author: z.string(),
     authorBio: z.string().optional(),
-    authorGitHub: z.string().optional(),
+    authorGitHub: z.string().regex(/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/, 'Invalid GitHub username').optional(),
     category: z.enum([
       'Windows Security',
       'Vulnerability Management',

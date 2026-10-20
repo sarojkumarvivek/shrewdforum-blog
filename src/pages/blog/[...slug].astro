@@ -4,17 +4,22 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map(post => ({
-    // entry.id is like "sample-post-1.md" — strip the extension for the URL
-    params: { slug: post.id.replace(/\.md$/, '') },
-    props: { post },
-  }));
+  return posts.map(post => {
+    const relatedPosts = posts
+      .filter(p => p.id !== post.id && (p.data.category === post.data.category || p.data.tags?.some(t => post.data.tags?.includes(t))))
+      .slice(0, 2);
+
+    return {
+      params: { slug: post.id.replace(/\.md$/, '') },
+      props: { post, relatedPosts },
+    };
+  });
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { post, relatedPosts = [] } = Astro.props;
+const { Content, headings } = await render(post);
 ---
 
-<BlogPostLayout post={post}>
+<BlogPostLayout post={post} headings={headings} relatedPosts={relatedPosts}>
   <Content />
 </BlogPostLayout>

@@ -3,8 +3,7 @@
    Security, Tested.
    ============================================================ */
 
-/* ─── Google Fonts Import ─── */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* ─── Google Fonts are preconnected & loaded in BaseLayout.astro ─── */
 
 /* ─── CSS Custom Properties ─── */
 :root {

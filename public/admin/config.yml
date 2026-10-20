@@ -25,7 +25,7 @@ collections:
       - { label: "Publish Date", name: pubDate, widget: datetime }
       - { label: "Author", name: author, widget: string }
       - { label: "Author Bio", name: authorBio, widget: text, required: false }
-      - { label: "Author GitHub", name: authorGitHub, widget: string, required: false }
+      - { label: "Author GitHub", name: authorGitHub, widget: string, required: false, pattern: ['^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$', "Must be a valid GitHub username (letters, numbers, hyphens, max 39 chars)"] }
       - label: "Category"
         name: category
         widget: select

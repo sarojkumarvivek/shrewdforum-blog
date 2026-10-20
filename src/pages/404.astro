@@ -2,6 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+const displayUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : `https://forum.shr3wd.workers.dev${Astro.url.pathname}`;
 ---
 
 <BaseLayout
@@ -21,7 +25,7 @@ import Footer from '../components/Footer.astro';
           </div>
           <div class="error-terminal-body">
             <div style="color: var(--color-cyan); font-family: var(--font-mono);">
-              $ curl -I https://shrewd.pages.dev{Astro.url.pathname}
+              $ curl -I {displayUrl}
             </div>
             <div style="color: #64748b; font-family: var(--font-mono); margin-top: 0.5rem;">
               HTTP/2 <span style="color: var(--color-red); font-weight: 700;">404</span>
