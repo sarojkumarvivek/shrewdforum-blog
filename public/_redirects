@@ -1,2 +1,0 @@
-# Cloudflare Pages Redirects
-http://forum.shr3wd.workers.dev/* https://forum.shr3wd.workers.dev/:splat 301!

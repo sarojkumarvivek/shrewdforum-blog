@@ -26,7 +26,7 @@ All changes maintain full compatibility with Astro 7 static site generation, Dec
 | **A03: Injection (Metadata)** | Author GitHub handle injection | Freeform string in frontmatter schema | **REMEDIATED** | `src/content.config.ts` (Zod regex check), `public/admin/config.yml` (pattern validation) |
 | **A04: Insecure Design** | Contact & pitch form automated submission spam | Unprotected POST inputs with no limits | **REMEDIATED** | `src/pages/contact.astro`, `src/pages/write-for-us.astro` (`botcheck` honeypot, 15s sessionStorage rate limiter, `maxlength` bounds) |
 | **A05: Security Misconfiguration** | Zero HTTP security headers | Default web server headers | **REMEDIATED** | `public/_headers` (Strict-Transport-Security, Content-Security-Policy, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) |
-| **A05: Security Misconfiguration** | Cleartext HTTP connection fallback | Edge default | **REMEDIATED** | `public/_redirects` (Strict 301! canonical HTTPS redirect) |
+| **A05: Security Misconfiguration** | Cleartext HTTP connection fallback | Edge default | **REMEDIATED** | `public/_headers` (HSTS Preload header) & Cloudflare Always Use HTTPS |
 | **A05: Security Misconfiguration** | Software fingerprinting | `meta name="generator"` exposing Astro version | **REMEDIATED** | Removed from `src/layouts/BaseLayout.astro` |
 | **A06: Vulnerable & Outdated Components** | Decap CMS loaded from unpinned CDN without SRI | `unpkg.com/decap-cms@^3.0.0` floating semver | **REMEDIATED** | `public/admin/index.html` pinned to `3.17.1` with SHA-384 Subresource Integrity (SRI) |
 | **A06: Vulnerable & Outdated Components** | Dependencies vulnerability audit | Transitive package checks | **VERIFIED** | `npm audit` verified clean (0 vulnerabilities) |
