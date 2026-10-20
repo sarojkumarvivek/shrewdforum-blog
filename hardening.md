@@ -48,18 +48,16 @@ Cloudflare Pages automatically reads the `_headers` file in `public/` and enforc
 # Global headers
 /*
   X-Content-Type-Options: nosniff
-  X-Frame-Options: DENY
+  X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), screen-wake-lock=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   X-XSS-Protection: 1; mode=block
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://api.web3forms.com https://cloudflareinsights.com https://static.cloudflareinsights.com https://shrewd-auth.shr3wd.workers.dev https://api.github.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.web3forms.com https://cloudflareinsights.com https://static.cloudflareinsights.com https://shrewd-auth.shr3wd.workers.dev https://api.github.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'self'; base-uri 'self'
 
 # Decap CMS Admin Route
 /admin/*
   X-Robots-Tag: noindex, nofollow, noarchive
-  X-Frame-Options: SAMEORIGIN
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https: blob:; connect-src 'self' https://shrewd-auth.shr3wd.workers.dev https://api.github.com; form-action 'self'; frame-ancestors 'self'; base-uri 'self'
 ```
 
 **Key Safeguards:**
